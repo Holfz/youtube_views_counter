@@ -1,17 +1,16 @@
 /*jshint esversion: 6 */
-const env = require('env2')('.env');
 const got = require('got');
 
 // Enter your own YT API Key here
-const youtubeApiKey = process.env.YT_API_KEY;
+const youtubeApiKey = "Your youtube API key here";
 
 // Array of Youtube UIDs
-const array = ["wZC5FoJ-cPU", "aSiAf_qLR4Y", "JlgyYb14O6Q", "mBmuNHtiUQ0", "UVswB4CpOZo", "a4C-vrM4VQA", "1s3g4Ic92tI", "koCGDN8y5SQ", "cNa1eXj90CE", "ASEWfySWb6Q", "qIbzN14kvXQ", "tyDSLVjQYWU", "WALepYw7Qww", "PAawCINgRDU", "47dR2HIAOwA", "KA7nhv6oq9s", "rln5G8Cahww", "01_u4evxMow", "dqNLSqAcIyg",
-"RIwy5uNUfDA"];
+const array = ["Youtube video UIDs here"];
 
 // API URL + statistics endpoint
 const url = 'https://www.googleapis.com/youtube/v3/videos?key='+youtubeApiKey+'&part=statistics&id=';
 
+function doStuff() {
 const getData = () => {
 
 	// Youtube API returns an array of results if an array of UIDs is passed 
@@ -32,8 +31,6 @@ const processData = (d) => {
 	// check if all array elements have been returned
 	if(d.pageInfo.totalResults === array.length){
 
-		console.log("All results present, response matches array");
-
 		// we map our results to get the viewcount only
 		var counter = d.items.map(function(value, index ){
 			return parseInt(value.statistics.viewCount,10);
@@ -41,9 +38,8 @@ const processData = (d) => {
 		}).reduce(function(total, number){
 			return total + number;
 		});
-
-		console.log("Total views for all UIDs is", counter);
-
+	require('console-stamp')(console, 'ddd mmm dd yyyy HH:MM:ss');
+		console.log(",", counter);
 	} else {
 
 		console.log('mismatch ', d.pageInfo.totalResults, array.length);
@@ -51,5 +47,13 @@ const processData = (d) => {
 	}
 };
 
+
 // Run our function
 getData();
+};
+
+function run() {
+  setInterval(doStuff, 300000);
+};
+
+run();
